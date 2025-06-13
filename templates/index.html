@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador de Certificados</title>
+  <link rel="stylesheet" href="style2.css">
+</head>
+<body>
+
+  <h1>📄 Generador de Certificados</h1>
+
+  <form method="post" enctype="multipart/form-data">
+    <input type="file" name="archivo" accept=".csv" required>
+    <button type="submit">Cargar CSV</button>
+  </form>
+
+  {% if datos %}
+    <h2>Vista previa del CSV</h2>
+    <table>
+      <tr><th>Nombre</th><th>Curso</th></tr>
+      {% for fila in datos %}
+        <tr><td>{{ fila.nombre }}</td><td>{{ fila.curso }}</td></tr>
+      {% endfor %}
+    </table>
+
+    <form method="post" action="{{ url_for('ejecutar_generar') }}">
+      <button type="submit">✅ Confirmar y Generar Certificados</button>
+    </form>
+  {% endif %}
+
+  {% if resultado %}
+    <pre>{{ resultado }}</pre>
+  {% endif %}
+
+</body>
+</html>

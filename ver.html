@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Certificado Digital</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script> 
+</head>
+<body>
+
+  <div class="certificado">
+    <h1>Certificado Digital</h1>
+
+    <p><strong>Nombre:</strong> <span id="nombre">Cargando...</span></p>
+    <p><strong>Curso:</strong> <span id="curso">Cargando...</span></p>
+    <p><strong>Fecha:</strong> Abril 2025</p>
+
+    <p class="autentico">✅ Este certificado es auténtico y ha sido verificado digitalmente.</p>
+
+    <a id="btn-descargar" href="#" class="boton-descargar" download>Descargar Certificado (PDF)</a>
+
+    <h2>Escanear Código QR</h2>
+    <div id="qrcode"></div>
+
+    <p class="codigo">Código único: <span id="codigo"></span></p>
+  </div>
+
+  <script>
+    // Extraer el código desde la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const codigo = urlParams.get('codigo');
+
+    if (!codigo) {
+      document.body.innerHTML = "<p style='text-align:center; font-size:20px;'>⚠️ Código no encontrado. Por favor usa un enlace válido.</p>";
+    } else {
+      document.getElementById("codigo").textContent = codigo;
+
+      // Aquí puedes conectar a una base de datos, JSON o CSV más adelante
+      // Por ahora simulamos datos de ejemplo
+      const certificados = {
+        "AB12CD": {
+          nombre: "Luis Enrique Mogollón Guzmán",
+          curso: "Uso correcto de equipo de protección personal",
+          pdf: "pdfs/Luis_Enrique_Mogollon_Guzman_Uso_EPP.pdf"
+        }
+        // Agrega más códigos aquí según vayas avanzando
+      };
+
+      if (certificados[codigo]) {
+        const data = certificados[codigo];
+        document.getElementById("nombre").textContent = data.nombre;
+        document.getElementById("curso").textContent = data.curso;
+        document.getElementById("btn-descargar").href = data.pdf;
+      } else {
+        document.body.innerHTML = "<p style='text-align:center; font-size:20px;'>❌ Certificado no encontrado.</p>";
+      }
+
+      // Generar QR dinámico
+      new QRCode(document.getElementById("qrcode"), {
+        text: window.location.href,
+        width: 128,
+        height: 128,
+        colorDark : "#000000",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+      });
+    }
+  </script>
+
+</body>
+</html>
